@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+    skip_before_action :authorized, only: [:personal]
+
 
     def index
         posts = Post.all.order(created_at: :desc)
@@ -11,17 +13,17 @@ class PostsController < ApplicationController
     end
 
     def feed
-        feed = Post.all.order(created_at: :desc).filter { |post| $current_user.following_ids.include?(post.user.id) }
+        feed = Post.all.order(created_at: :desc).filter { |post| current_user.following_ids.include?(post.user.id) }
         render json: feed
     end
 
     def personal
-        feed = Post.all.order(created_at: :desc).where(user: $current_user)
+        feed = Post.all.order(created_at: :desc).where(user: current_user)
         render json: feed
     end
 
     def create
-        post = $current_user.posts.create(post_params)
+        post = current_user.posts.create(post_params)
         render json: post, status: :created
     end
 

@@ -8,7 +8,13 @@ Rails.application.routes.draw do
 
   post "/signup", to: "users#create"
 
-  post "/login", to: "sessions#create"
+  post "/login", to: "auth#create"
+
+  post '/auto_login', to: 'auth#auto_login'
+
+  get '/logged_in', to: 'application#logged_in?'
+
+
   
   get "/me", to: "users#me"
 
@@ -16,7 +22,7 @@ Rails.application.routes.draw do
 
   get "/personal", to: "posts#personal"
 
-    delete "/logout", to: "sessions#destroy"
+    delete "/logout", to: "auth#destroy"
  
   get '/hello', to: 'application#hello_world'
 
